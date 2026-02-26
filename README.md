@@ -1,1 +1,798 @@
 # hilmi3535.github.io
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marka Anketi</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,200;0,300;0,400;0,500;1,300&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: #faf7f2;
+  color: #2a2018;
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+}
+
+.screen { display: none; }
+.screen.active { display: flex; flex-direction: column; }
+
+/* PROGRESS */
+.progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: #8a6a40;
+  transition: width 0.5s ease;
+  z-index: 100;
+}
+
+/* ══ INTRO ══ */
+#intro {
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 24px;
+  background: #faf7f2;
+  position: relative;
+  overflow: hidden;
+}
+#intro::before {
+  content: '';
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(180,144,80,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+#intro::after {
+  content: '';
+  position: absolute;
+  bottom: -100px; left: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(140,100,60,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+.intro-eyebrow {
+  font-size: 0.6rem;
+  letter-spacing: 5px;
+  color: #b4906a;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  position: relative; z-index: 1;
+}
+#intro h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 6vw, 3.8rem);
+  font-weight: 400;
+  color: #2a2018;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  position: relative; z-index: 1;
+}
+#intro p {
+  font-size: 0.88rem;
+  color: #9a8a70;
+  line-height: 1.9;
+  max-width: 400px;
+  font-weight: 300;
+  margin: 0 auto 48px;
+  position: relative; z-index: 1;
+}
+.start-btn {
+  padding: 16px 48px;
+  background: #2a2018;
+  color: #faf7f2;
+  border: none;
+  border-radius: 100px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative; z-index: 1;
+}
+.start-btn:hover { background: #3d3020; transform: translateY(-2px); }
+
+.brand-chips {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+.b-chip {
+  padding: 8px 20px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  border: 1px solid rgba(42,32,24,0.15);
+  background: #fff;
+  color: #6a5a40;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+}
+
+/* ══ SURVEY ══ */
+#survey { min-height: 100vh; }
+
+.question-wrap { display: none; min-height: 100vh; flex-direction: column; animation: fadeUp 0.5s ease; }
+.question-wrap.active { display: flex; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.q-header {
+  padding: 64px 24px 32px;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+.q-step {
+  font-size: 0.6rem;
+  letter-spacing: 4px;
+  color: #b4906a;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.q-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 400;
+  color: #2a2018;
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+.q-hint { font-size: 0.8rem; color: #b4906a; font-weight: 300; font-style: italic; }
+
+/* BRAND CARDS */
+.brand-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 100%;
+}
+
+.brand-card {
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(.23,1,.32,1);
+  border: 2px solid transparent;
+  box-shadow: 0 4px 20px rgba(42,32,24,0.08);
+}
+.brand-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(42,32,24,0.14); }
+.brand-card.selected { border-color: #8a6a40; }
+.brand-card.selected .bc-check { opacity: 1; transform: scale(1); }
+
+.bc-visual {
+  height: 170px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.bc-check {
+  position: absolute;
+  top: 10px; right: 10px;
+  width: 26px; height: 26px;
+  background: #8a6a40;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+/* NÖTR — Beyaz zemin, siyah yazı */
+.bc-notr {
+  background: #ffffff;
+  position: relative;
+}
+.bc-notr::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 19px, rgba(0,0,0,0.04) 19px, rgba(0,0,0,0.04) 20px
+  );
+}
+.bc-notr .bn-name {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 3rem;
+  color: #0a0a0a;
+  letter-spacing: 8px;
+  position: relative; z-index: 1;
+  line-height: 1;
+}
+.bc-notr .bn-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.65rem;
+  color: #999;
+  letter-spacing: 2px;
+  margin-top: 6px;
+  position: relative; z-index: 1;
+}
+.bc-notr .bn-line {
+  width: 32px; height: 1px;
+  background: rgba(0,0,0,0.15);
+  margin: 8px 0;
+  position: relative; z-index: 1;
+}
+
+/* ZENO — Deep Forest & Warm Gold */
+.bc-zeno {
+  background: #1e2a1a;
+  position: relative;
+  overflow: hidden;
+}
+.bc-zeno::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at top, rgba(180,144,80,0.1) 0%, transparent 60%);
+}
+.bc-zeno .bz-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.8rem;
+  font-weight: 600;
+  color: #c8a86a;
+  letter-spacing: 6px;
+  position: relative; z-index: 1;
+  line-height: 1;
+}
+.bc-zeno .bz-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.7rem;
+  color: rgba(200,168,106,0.5);
+  letter-spacing: 3px;
+  margin-top: 8px;
+  position: relative; z-index: 1;
+}
+.bc-zeno .bz-sprig {
+  position: absolute;
+  bottom: 12px; right: 14px;
+  font-size: 1.2rem;
+  opacity: 0.3;
+}
+
+/* KIVO — Warm Terracotta */
+.bc-kivo {
+  background: #2a1208;
+  position: relative;
+  overflow: hidden;
+}
+.bc-kivo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at bottom left, rgba(220,100,50,0.15) 0%, transparent 60%);
+}
+.bc-kivo .bk-name {
+  font-family: 'Lora', serif;
+  font-weight: 600;
+  font-size: 2.8rem;
+  color: #e8c090;
+  letter-spacing: 4px;
+  position: relative; z-index: 1;
+  line-height: 1;
+}
+.bc-kivo .bk-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  font-size: 0.6rem;
+  color: rgba(232,192,144,0.5);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-top: 8px;
+  position: relative; z-index: 1;
+}
+.bc-kivo .bk-dot {
+  width: 5px; height: 5px;
+  background: #e8c090;
+  border-radius: 50%;
+  margin: 6px 0;
+  opacity: 0.4;
+  position: relative; z-index: 1;
+}
+
+/* MOYA — Soft Ivory & Earth */
+.bc-moya {
+  background: #fff;
+  position: relative;
+}
+.bc-moya::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at top right, rgba(180,144,106,0.1) 0%, transparent 60%);
+}
+.bc-moya .bm-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  color: #3a2818;
+  letter-spacing: 3px;
+  position: relative; z-index: 1;
+  line-height: 1;
+}
+.bc-moya .bm-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.75rem;
+  color: #b4906a;
+  letter-spacing: 2px;
+  margin-top: 6px;
+  position: relative; z-index: 1;
+}
+.bc-moya .bm-arc {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 40px;
+  background: rgba(180,144,106,0.08);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+
+.bc-info {
+  padding: 14px 16px;
+  background: #fff;
+  border-top: 1px solid rgba(42,32,24,0.08);
+}
+.bi-name { font-size: 0.75rem; font-weight: 500; color: #3a2818; margin-bottom: 2px; }
+.bi-desc { font-size: 0.7rem; color: #b4906a; font-weight: 300; line-height: 1.5; }
+
+/* Q2 FEELINGS */
+.feelings-wrap {
+  padding: 0 20px 32px;
+  max-width: 520px;
+  margin: 0 auto;
+  width: 100%;
+  flex: 1;
+}
+.feeling-opt {
+  padding: 16px 20px;
+  border: 1px solid rgba(42,32,24,0.12);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #fff;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 8px rgba(42,32,24,0.04);
+}
+.feeling-opt:hover { border-color: #b4906a; background: #fffdf9; }
+.feeling-opt.selected { border-color: #8a6a40; background: #fdf8f2; }
+.fo-emoji { font-size: 1.3rem; }
+.fo-text { font-size: 0.85rem; color: #5a4a30; font-weight: 300; line-height: 1.4; }
+
+/* Q3 OPEN */
+.open-wrap {
+  padding: 0 20px 32px;
+  max-width: 520px;
+  margin: 0 auto;
+  width: 100%;
+  flex: 1;
+}
+.open-input {
+  width: 100%;
+  background: #fff;
+  border: 1px solid rgba(42,32,24,0.15);
+  border-radius: 16px;
+  padding: 20px;
+  color: #2a2018;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.7;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s;
+  min-height: 140px;
+  box-shadow: 0 2px 12px rgba(42,32,24,0.06);
+}
+.open-input:focus { border-color: #b4906a; }
+.open-input::placeholder { color: #c4b4a0; }
+
+/* Q4 PERSONA */
+.persona-wrap {
+  padding: 0 20px 32px;
+  max-width: 520px;
+  margin: 0 auto;
+  width: 100%;
+  flex: 1;
+}
+.persona-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.persona-opt {
+  padding: 18px 14px;
+  border: 1px solid rgba(42,32,24,0.12);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #fff;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(42,32,24,0.04);
+}
+.persona-opt:hover { border-color: #b4906a; }
+.persona-opt.selected { border-color: #8a6a40; background: #fdf8f2; }
+.po-emoji { font-size: 1.6rem; display: block; margin-bottom: 8px; }
+.po-text { font-size: 0.72rem; color: #7a6a50; font-weight: 300; line-height: 1.5; }
+
+/* NAV */
+.q-nav {
+  padding: 20px 24px 40px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+.next-btn {
+  padding: 14px 40px;
+  background: #2a2018;
+  color: #faf7f2;
+  border: none;
+  border-radius: 100px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+  opacity: 0.25;
+  pointer-events: none;
+}
+.next-btn.on { opacity: 1; pointer-events: all; }
+.next-btn.on:hover { background: #3d3020; }
+.skip-btn {
+  padding: 14px 24px;
+  background: transparent;
+  color: #c4b4a0;
+  border: 1px solid rgba(42,32,24,0.15);
+  border-radius: 100px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.skip-btn:hover { color: #8a6a40; border-color: #b4906a; }
+
+/* RESULT */
+#result {
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  background: #faf7f2;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+#result::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(180,144,80,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+.result-label {
+  font-size: 0.6rem;
+  letter-spacing: 5px;
+  color: #b4906a;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  position: relative; z-index: 1;
+}
+.result-thanks {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 400;
+  color: #2a2018;
+  margin-bottom: 8px;
+  position: relative; z-index: 1;
+}
+.result-sub-text {
+  font-size: 0.85rem;
+  color: #b4906a;
+  font-weight: 300;
+  font-style: italic;
+  margin-bottom: 40px;
+  position: relative; z-index: 1;
+}
+.result-card {
+  background: #fff;
+  border: 1px solid rgba(42,32,24,0.1);
+  border-radius: 20px;
+  padding: 32px;
+  max-width: 380px;
+  margin: 0 auto 24px;
+  box-shadow: 0 8px 32px rgba(42,32,24,0.08);
+  position: relative; z-index: 1;
+}
+.rc-brand-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #2a2018;
+  letter-spacing: 4px;
+  margin-bottom: 4px;
+}
+.rc-sub { font-size: 0.7rem; letter-spacing: 2px; color: #b4906a; margin-bottom: 16px; font-style: italic; }
+.rc-divider { width: 40px; height: 1px; background: rgba(42,32,24,0.15); margin: 0 auto 16px; }
+.rc-feeling { font-size: 0.85rem; color: #7a6a50; font-weight: 300; line-height: 1.6; }
+.rc-open {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(42,32,24,0.08);
+  font-size: 0.8rem;
+  color: #b4906a;
+  font-style: italic;
+  line-height: 1.6;
+}
+.restart-btn {
+  padding: 12px 32px;
+  background: transparent;
+  border: 1px solid rgba(42,32,24,0.2);
+  color: #9a8a70;
+  border-radius: 100px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative; z-index: 1;
+}
+.restart-btn:hover { border-color: #8a6a40; color: #5a4a30; }
+
+@media (max-width: 500px) {
+  .brand-cards { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .bc-visual { height: 150px; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress" style="width:0%"></div>
+
+<!-- INTRO -->
+<div class="screen active" id="intro">
+  <div class="intro-eyebrow">Marka Araştırması · 2025</div>
+  <h1>Sana bir marka<br>göstermek istiyoruz.</h1>
+  <p>Dört farklı isim, dört farklı his. Hangisi seni durdurur? Hangisi senin için yapılmış gibi hissettiriyor? 2 dakikan var.</p>
+  <button class="start-btn" onclick="startSurvey()">Başla →</button>
+  <div class="brand-chips">
+    <div class="b-chip">NÖTR</div>
+    <div class="b-chip">ZENO</div>
+    <div class="b-chip">KIVO</div>
+    <div class="b-chip">Moya</div>
+  </div>
+</div>
+
+<!-- SURVEY -->
+<div class="screen" id="survey">
+
+  <!-- Q1 -->
+  <div class="question-wrap active" id="q1">
+    <div class="q-header">
+      <div class="q-step">Soru 1 / 4</div>
+      <div class="q-title">Hangi marka seni durdurdu?</div>
+      <div class="q-hint">İlk içgüdünle seç</div>
+    </div>
+    <div class="brand-cards">
+
+      <div class="brand-card" onclick="selectBrand(this,'NÖTR','You, But Better')">
+        <div class="bc-check">✓</div>
+        <div class="bc-visual bc-notr">
+          <div class="bn-name">NÖTR</div>
+          <div class="bn-line"></div>
+          <div class="bn-sub">You, But Better</div>
+        </div>
+        <div class="bc-info" style="background:#fff; border-top-color:rgba(0,0,0,0.06)">
+          <div class="bi-name" style="color:#0a0a0a">NÖTR</div>
+          <div class="bi-desc" style="color:#999">Minimal, şehirli, kendine yatırım</div>
+        </div>
+      </div>
+
+      <div class="brand-card" onclick="selectBrand(this,'ZENO','Refined Snacks')">
+        <div class="bc-check">✓</div>
+        <div class="bc-visual bc-zeno">
+          <div class="bz-name">ZENO</div>
+          <div class="bz-sub">Refined Snacks</div>
+          <div class="bz-sprig">🌿</div>
+        </div>
+        <div class="bc-info">
+          <div class="bi-name">ZENO</div>
+          <div class="bi-desc">Premium, doğal, usta ellerden</div>
+        </div>
+      </div>
+
+      <div class="brand-card" onclick="selectBrand(this,'KIVO','The Smarter Snack')">
+        <div class="bc-check">✓</div>
+        <div class="bc-visual bc-kivo">
+          <div class="bk-name">KIVO</div>
+          <div class="bk-dot"></div>
+          <div class="bk-sub">The Smarter Snack</div>
+        </div>
+        <div class="bc-info">
+          <div class="bi-name">KIVO</div>
+          <div class="bi-desc">Akıllı, modern, bilinçli seçim</div>
+        </div>
+      </div>
+
+      <div class="brand-card" onclick="selectBrand(this,'Moya','Snack with Purpose')">
+        <div class="bc-check">✓</div>
+        <div class="bc-visual bc-moya">
+          <div class="bm-arc"></div>
+          <div class="bm-name">Moya</div>
+          <div class="bm-sub">Snack with Purpose</div>
+        </div>
+        <div class="bc-info">
+          <div class="bi-name">MOYA</div>
+          <div class="bi-desc">Organik, sıcak, amaçlı beslenme</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="q-nav">
+      <button class="next-btn" id="next1" onclick="goTo(2)">Devam →</button>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-wrap" id="q2">
+    <div class="q-header">
+      <div class="q-step">Soru 2 / 4</div>
+      <div class="q-title">Ne hissettirdi?</div>
+      <div class="q-hint">En yakın olanı seç</div>
+    </div>
+    <div class="feelings-wrap">
+      <div class="feeling-opt" onclick="selectFeeling(this,'Bunu alarak kendime iyi bir şey yapıyorum')"><div class="fo-emoji">💚</div><div class="fo-text">Bunu alarak kendime iyi bir şey yapıyorum</div></div>
+      <div class="feeling-opt" onclick="selectFeeling(this,'Bu marka beni anlıyor')"><div class="fo-emoji">🎯</div><div class="fo-text">Bu marka beni anlıyor</div></div>
+      <div class="feeling-opt" onclick="selectFeeling(this,'Şık ve premium görünüyor')"><div class="fo-emoji">✨</div><div class="fo-text">Şık ve premium görünüyor</div></div>
+      <div class="feeling-opt" onclick="selectFeeling(this,'Merak uyandırıyor, daha fazlasını görmek istiyorum')"><div class="fo-emoji">🔍</div><div class="fo-text">Merak uyandırıyor, daha fazlasını görmek istiyorum</div></div>
+      <div class="feeling-opt" onclick="selectFeeling(this,'Rafta görürsem satın alırım')"><div class="fo-emoji">🛒</div><div class="fo-text">Rafta görürsem satın alırım</div></div>
+      <div class="feeling-opt" onclick="selectFeeling(this,'Pek etkilenmedim')"><div class="fo-emoji">😐</div><div class="fo-text">Pek etkilenmedim</div></div>
+    </div>
+    <div class="q-nav">
+      <button class="next-btn" id="next2" onclick="goTo(3)">Devam →</button>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-wrap" id="q3">
+    <div class="q-header">
+      <div class="q-step">Soru 3 / 4</div>
+      <div class="q-title">Bu isim sende ne çağrıştırıyor?</div>
+      <div class="q-hint">Bir kelime bile yeter</div>
+    </div>
+    <div class="open-wrap">
+      <textarea class="open-input" id="open-answer" placeholder="Aklına ilk gelen şeyi yaz..."></textarea>
+    </div>
+    <div class="q-nav">
+      <button class="next-btn on" onclick="goTo(4)">Devam →</button>
+      <button class="skip-btn" onclick="goTo(4)">Geç</button>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-wrap" id="q4">
+    <div class="q-header">
+      <div class="q-step">Soru 4 / 4</div>
+      <div class="q-title">Sen kimsin?</div>
+      <div class="q-hint">Kendine en yakın olanı seç</div>
+    </div>
+    <div class="persona-wrap">
+      <div class="persona-grid">
+        <div class="persona-opt" onclick="selectPersona(this,'Şehirli, kafe müdavimi')"><span class="po-emoji">☕</span><div class="po-text">Şehirli, kafe müdavimi, trend takipçisi</div></div>
+        <div class="persona-opt" onclick="selectPersona(this,'Sağlıklı beslenme takipçisi')"><span class="po-emoji">🌿</span><div class="po-text">Sağlıklı beslenmeye önem veren, etiket okuyan</div></div>
+        <div class="persona-opt" onclick="selectPersona(this,'Aktif, sporcu')"><span class="po-emoji">⚡</span><div class="po-text">Aktif, sporcu, enerjik yaşam tarzı</div></div>
+        <div class="persona-opt" onclick="selectPersona(this,'Glutensiz / özel diyet')"><span class="po-emoji">🔬</span><div class="po-text">Glutensiz veya özel diyet takipçisi</div></div>
+      </div>
+    </div>
+    <div class="q-nav">
+      <button class="next-btn" id="next4" onclick="showResult()">Sonucu Gör →</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- RESULT -->
+<div class="screen" id="result">
+  <div class="result-label">Teşekkürler</div>
+  <div class="result-thanks">Seçimin kaydedildi.</div>
+  <div class="result-sub-text">Geri bildiriminiz için teşekkürler.</div>
+  <div class="result-card" id="result-card"></div>
+  <button class="restart-btn" onclick="restart()">Başa Dön</button>
+</div>
+
+<script>
+let ans = { brand: '', sub: '', feeling: '', open: '', persona: '' };
+
+function startSurvey() {
+  show('survey'); updateProgress(1);
+}
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function updateProgress(q) {
+  document.getElementById('progress').style.width = ((q-1)/4*100) + '%';
+}
+
+function selectBrand(el, brand, sub) {
+  document.querySelectorAll('.brand-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  ans.brand = brand; ans.sub = sub;
+  document.getElementById('next1').classList.add('on');
+}
+
+function selectFeeling(el, feeling) {
+  document.querySelectorAll('.feeling-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  ans.feeling = feeling;
+  document.getElementById('next2').classList.add('on');
+}
+
+function selectPersona(el, persona) {
+  document.querySelectorAll('.persona-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  ans.persona = persona;
+  document.getElementById('next4').classList.add('on');
+}
+
+function goTo(q) {
+  ans.open = document.getElementById('open-answer')?.value || '';
+  document.querySelectorAll('.question-wrap').forEach(w => w.classList.remove('active'));
+  document.getElementById('q'+q).classList.add('active');
+  updateProgress(q);
+  window.scrollTo(0,0);
+}
+
+function showResult() {
+  ans.open = document.getElementById('open-answer')?.value || '';
+  const card = document.getElementById('result-card');
+  card.innerHTML = `
+    <div class="rc-brand-name">${ans.brand}</div>
+    <div class="rc-sub">${ans.sub}</div>
+    <div class="rc-divider"></div>
+    <div class="rc-feeling">${ans.feeling || 'Geri bildirim verilmedi'}</div>
+    ${ans.open ? `<div class="rc-open">"${ans.open}"</div>` : ''}
+  `;
+  document.getElementById('progress').style.width = '100%';
+  show('result');
+}
+
+function restart() {
+  ans = { brand:'', sub:'', feeling:'', open:'', persona:'' };
+  document.querySelectorAll('.brand-card,.feeling-opt,.persona-opt').forEach(el => el.classList.remove('selected'));
+  document.querySelectorAll('.next-btn').forEach(b => { if(b.id !== 'next3') b.classList.remove('on'); });
+  document.getElementById('open-answer').value = '';
+  document.querySelectorAll('.question-wrap').forEach(w => w.classList.remove('active'));
+  document.getElementById('q1').classList.add('active');
+  document.getElementById('progress').style.width = '0%';
+  show('intro');
+}
+</script>
+</body>
+</html>
