@@ -4,183 +4,85 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Marka Anketi</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;0,500;1,300&family=Josefin+Sans:wght@100;200;300;400&family=Manrope:wght@200;300;400;700;800&family=Barlow+Condensed:wght@200;300;400;600;700&family=Unbounded:wght@200;300;400&family=Lexend:wght@100;200;300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;0,500;1,300&family=Josefin+Sans:wght@100;200;300;400&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior:smooth; }
-
-body {
-  background: #faf7f2;
-  color: #2a2018;
-  font-family: 'DM Sans', sans-serif;
-  min-height: 100vh;
-}
+body { background:#faf7f2; color:#2a2018; font-family:'DM Sans',sans-serif; min-height:100vh; }
 
 .screen { display:none; }
 .screen.active { display:flex; flex-direction:column; min-height:100vh; }
 
-/* PROGRESS */
-.progress-bar {
-  position: fixed; top:0; left:0;
-  height: 3px; background: #8a6a40;
-  transition: width 0.5s ease; z-index:100;
-}
+.progress-bar { position:fixed; top:0; left:0; height:3px; background:#8a6a40; transition:width 0.5s ease; z-index:100; }
 
-/* ══ INTRO ══ */
-#intro {
-  min-height:100vh; align-items:center; justify-content:center;
-  text-align:center; padding:60px 24px;
-  background:#faf7f2; position:relative; overflow:hidden;
-}
-#intro::before {
-  content:''; position:absolute; top:-100px; right:-100px;
-  width:500px; height:500px;
-  background:radial-gradient(circle, rgba(180,144,80,0.08) 0%, transparent 60%);
-  pointer-events:none;
-}
+#intro { min-height:100vh; align-items:center; justify-content:center; text-align:center; padding:60px 24px; position:relative; overflow:hidden; }
+#intro::before { content:''; position:absolute; top:-100px; right:-100px; width:500px; height:500px; background:radial-gradient(circle, rgba(180,144,80,0.08) 0%, transparent 60%); pointer-events:none; }
 .intro-eyebrow { font-size:0.6rem; letter-spacing:5px; color:#b4906a; text-transform:uppercase; margin-bottom:20px; position:relative; z-index:1; }
-#intro h1 { font-size:clamp(2rem,6vw,3.2rem); font-weight:300; color:#2a2018; line-height:1.2; margin-bottom:16px; position:relative; z-index:1; letter-spacing:-0.5px; }
+#intro h1 { font-size:clamp(2rem,6vw,3.2rem); font-weight:300; color:#2a2018; line-height:1.2; margin-bottom:16px; position:relative; z-index:1; }
 #intro p { font-size:0.88rem; color:#9a8a70; line-height:1.9; max-width:400px; font-weight:300; margin:0 auto 32px; position:relative; z-index:1; }
-.start-btn { padding:16px 48px; background:#2a2018; color:#faf7f2; border:none; border-radius:100px; font-family:'DM Sans',sans-serif; font-size:0.85rem; font-weight:400; letter-spacing:2px; cursor:pointer; transition:all 0.3s; position:relative; z-index:1; }
+.start-btn { padding:16px 48px; background:#2a2018; color:#faf7f2; border:none; border-radius:100px; font-family:'DM Sans',sans-serif; font-size:0.85rem; cursor:pointer; transition:all 0.3s; position:relative; z-index:1; letter-spacing:2px; }
 .start-btn:hover { background:#3d3020; transform:translateY(-2px); }
-.brand-chips { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:32px; position:relative; z-index:1; }
-.b-chip { padding:6px 16px; border:1px solid rgba(42,32,24,0.15); border-radius:100px; font-size:0.65rem; letter-spacing:3px; color:#9a8a70; }
 
-/* ══ QUESTION WRAPPER ══ */
-.q-wrap {
-  flex:1; display:flex; flex-direction:column;
-  align-items:center; padding:60px 20px 40px;
-  max-width:600px; margin:0 auto; width:100%;
-}
+.q-wrap { flex:1; display:none; flex-direction:column; align-items:center; padding:60px 20px 40px; max-width:600px; margin:0 auto; width:100%; }
+.q-wrap.active { display:flex; }
 .q-step { font-size:0.55rem; letter-spacing:4px; color:#b4906a; text-transform:uppercase; margin-bottom:12px; }
 .q-title { font-size:clamp(1.3rem,4vw,1.8rem); font-weight:300; color:#2a2018; text-align:center; margin-bottom:6px; line-height:1.3; }
-.q-hint { font-size:0.78rem; color:#b4906a; font-weight:300; text-align:center; margin-bottom:32px; }
+.q-hint { font-size:0.78rem; color:#b4906a; font-weight:300; text-align:center; margin-bottom:28px; }
 
-/* ══ SEN KİMSİN ══ */
-.demo-group { width:100%; margin-bottom:24px; }
+.demo-group { width:100%; margin-bottom:22px; }
 .demo-label { font-size:0.65rem; letter-spacing:3px; color:#9a8a70; text-transform:uppercase; margin-bottom:12px; }
 .demo-opts { display:flex; gap:10px; flex-wrap:wrap; }
-.demo-opt {
-  padding:10px 18px; border:1px solid rgba(42,32,24,0.15); border-radius:100px;
-  font-size:0.8rem; color:#7a6a50; cursor:pointer; transition:all 0.2s; background:#fff;
-}
+.demo-opt { padding:10px 18px; border:1px solid rgba(42,32,24,0.15); border-radius:100px; font-size:0.8rem; color:#7a6a50; cursor:pointer; transition:all 0.2s; background:#fff; }
 .demo-opt:hover { border-color:#b4906a; }
 .demo-opt.sel { border-color:#8a6a40; background:#fdf8f2; color:#2a2018; font-weight:500; }
 
-/* ══ SLIDER SCREEN ══ */
-.slider-brand-visual {
-  width:100%; max-width:340px;
-  background:#fff; border-radius:20px;
-  padding:40px 24px 32px;
-  box-shadow:0 8px 40px rgba(42,32,24,0.1);
-  display:flex; flex-direction:column; align-items:center;
-  margin-bottom:32px;
-  min-height:160px; justify-content:center;
-}
-.slider-wrap { width:100%; max-width:340px; }
-.slider-labels { display:flex; justify-content:space-between; font-size:0.6rem; color:#b4906a; margin-bottom:8px; letter-spacing:1px; }
-.slider-track { position:relative; height:40px; display:flex; align-items:center; margin-bottom:8px; }
-input[type=range] {
-  width:100%; -webkit-appearance:none; appearance:none;
-  height:3px; background:rgba(42,32,24,0.12); border-radius:2px; outline:none; cursor:pointer;
-}
-input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance:none; width:28px; height:28px; border-radius:50%;
-  background:#2a2018; cursor:pointer; transition:transform 0.15s;
-  box-shadow:0 2px 8px rgba(42,32,24,0.25);
-}
-input[type=range][value="0"]::-webkit-slider-thumb {
-  opacity:0; pointer-events:none;
-}
-input[type=range].untouched::-webkit-slider-thumb {
-  opacity:0; pointer-events:none;
-}
-input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.15); }
-.slider-numbers { display:flex; justify-content:space-between; }
-.sn { font-size:0.6rem; color:#ccc; cursor:pointer; transition:color 0.2s; width:14px; text-align:center; }
-.sn.active { color:#2a2018; font-weight:700; font-size:0.75rem; }
-.slider-value-display { text-align:center; margin-top:4px; font-size:0.65rem; color:#9a8a70; letter-spacing:2px; height:20px; }
-.slider-counter { text-align:center; font-size:0.6rem; color:#ccc; letter-spacing:3px; margin-bottom:16px; }
+.brand-rating-page { width:100%; max-width:500px; }
+.brand-logo-box { background:#fff; border-radius:16px; padding:28px 24px 20px; display:flex; flex-direction:column; align-items:center; margin-bottom:24px; box-shadow:0 4px 20px rgba(42,32,24,0.07); border:1px solid rgba(42,32,24,0.06); }
+.brand-logo-box .vname { font-family:'Josefin Sans',sans-serif; font-weight:200; font-size:2.2rem; color:#2a2820; letter-spacing:10px; line-height:1; }
+.brand-logo-box .vsub { font-family:'Josefin Sans',sans-serif; font-weight:300; font-size:0.7rem; letter-spacing:3px; color:#aaa; margin-top:8px; }
+.brand-counter { font-size:0.55rem; letter-spacing:4px; color:#ccc; text-align:center; margin-bottom:16px; text-transform:uppercase; }
 
-/* ══ BRAND VISUALS ══ */
-/* ALL BRAND VISUALS — identical font/color/bg to eliminate bias */
-.vis-notr, .vis-zeno, .vis-kivo, .vis-moya, .vis-nuka {
-  background: #ffffff !important;
-}
-.vis-kivo::after { display:none; }
-.vis-notr .vname, .vis-zeno .vname, .vis-kivo .vname, .vis-moya .vname, .vis-nuka .vname {
-  font-family: 'Josefin Sans', sans-serif;
-  font-weight: 200;
-  font-size: 2.4rem;
-  color: #2a2820;
-  letter-spacing: 10px;
-  line-height: 1;
-}
-.vis-notr .vsub, .vis-zeno .vsub, .vis-kivo .vsub, .vis-moya .vsub, .vis-nuka .vsub {
-  font-family: 'Josefin Sans', sans-serif;
-  font-weight: 300;
-  font-size: 0.75rem;
-  letter-spacing: 3px;
-  color: #888;
-  margin-top: 8px;
-}
+.criteria-list { width:100%; display:flex; flex-direction:column; gap:16px; }
+.criterion { background:#fff; border-radius:14px; padding:16px 18px; border:1px solid rgba(42,32,24,0.07); box-shadow:0 2px 10px rgba(42,32,24,0.04); }
+.crit-label { font-size:0.82rem; color:#2a2018; font-weight:400; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+.crit-emoji { font-size:1.1rem; }
+input.crit-range { width:100%; -webkit-appearance:none; appearance:none; height:3px; background:rgba(42,32,24,0.1); border-radius:2px; outline:none; cursor:pointer; margin-bottom:8px; display:block; }
+input.crit-range::-webkit-slider-thumb { -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:#2a2018; cursor:pointer; box-shadow:0 2px 8px rgba(42,32,24,0.2); transition:transform 0.15s; }
+input.crit-range::-webkit-slider-thumb:hover { transform:scale(1.1); }
+input.crit-range.untouched::-webkit-slider-thumb { opacity:0; }
+.crit-nums { display:flex; justify-content:space-between; }
+.crit-num { font-size:0.6rem; color:#ccc; cursor:pointer; transition:all 0.15s; width:20px; text-align:center; padding:3px 0; border-radius:4px; }
+.crit-num:hover { color:#8a6a40; }
+.crit-num.active { color:#2a2018; font-weight:700; background:#fdf8f2; }
 
-/* ══ SEÇIM EKRANI ══ */
 .pick-cards { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; width:100%; max-width:560px; }
-.pick-card {
-  border:1.5px solid rgba(42,32,24,0.12); border-radius:14px;
-  overflow:hidden; cursor:pointer; transition:all 0.2s; background:#fff;
-}
+.pick-card { border:1.5px solid rgba(42,32,24,0.12); border-radius:14px; overflow:hidden; cursor:pointer; transition:all 0.2s; background:#fff; }
 .pick-card:hover { border-color:#b4906a; transform:translateY(-2px); }
 .pick-card.sel { border-color:#8a6a40; box-shadow:0 4px 20px rgba(42,32,24,0.12); }
-.pc-visual { aspect-ratio:1/1; width:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; overflow:hidden; padding:12px; }
-.pc-info { padding:10px 10px 12px; border-top:1px solid rgba(42,32,24,0.06); }
-.pc-name { font-size:0.7rem; font-weight:500; color:#3a2818; }
-.pc-desc { font-size:0.6rem; color:#b4906a; font-weight:300; margin-top:2px; line-height:1.4; }
-.pc-none { background:#f8f8f8 !important; border:1.5px dashed #ddd !important; }
-.pc-none .pc-none-text { font-size:0.8rem; color:#bbb; text-align:center; font-weight:300; line-height:1.5; }
+.pc-visual { aspect-ratio:1/1; width:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:12px; background:#fff; }
+.pc-visual .vname { font-family:'Josefin Sans',sans-serif; font-weight:200; font-size:1.3rem; color:#2a2820; letter-spacing:6px; text-align:center; }
+.pc-visual .vsub { font-family:'Josefin Sans',sans-serif; font-weight:300; font-size:0.5rem; letter-spacing:2px; color:#aaa; margin-top:6px; text-align:center; }
+.pc-none-visual { aspect-ratio:1/1; width:100%; display:flex; align-items:center; justify-content:center; background:#f8f8f8; }
+.pc-none-text { font-size:0.78rem; color:#bbb; text-align:center; font-weight:300; line-height:1.5; }
 
-/* ══ OPEN TEXT ══ */
-.open-input {
-  width:100%; background:#fff; border:1px solid rgba(42,32,24,0.15);
-  border-radius:16px; padding:20px; color:#2a2018;
-  font-family:'DM Sans',sans-serif; font-size:0.9rem; font-weight:300;
-  line-height:1.7; resize:none; outline:none; transition:border-color 0.2s;
-  min-height:140px; box-shadow:0 2px 12px rgba(42,32,24,0.06);
-}
+.open-input { width:100%; background:#fff; border:1px solid rgba(42,32,24,0.15); border-radius:16px; padding:20px; color:#2a2018; font-family:'DM Sans',sans-serif; font-size:0.9rem; font-weight:300; line-height:1.7; resize:none; outline:none; transition:border-color 0.2s; min-height:140px; box-shadow:0 2px 12px rgba(42,32,24,0.06); }
 .open-input:focus { border-color:#b4906a; }
 .open-input::placeholder { color:#c4b4a0; }
 
-/* ══ NAV ══ */
-.q-nav { padding:24px 0 40px; display:flex; justify-content:center; gap:12px; }
-.next-btn {
-  padding:14px 40px; background:#2a2018; color:#faf7f2;
-  border:none; border-radius:100px; font-family:'DM Sans',sans-serif;
-  font-size:0.85rem; cursor:pointer; transition:all 0.3s; opacity:0.35; pointer-events:none;
-}
+.q-nav { padding:24px 0 40px; display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap; }
+.next-btn { padding:14px 40px; background:#2a2018; color:#faf7f2; border:none; border-radius:100px; font-family:'DM Sans',sans-serif; font-size:0.85rem; cursor:pointer; transition:all 0.3s; opacity:0.35; pointer-events:none; }
 .next-btn.on { opacity:1; pointer-events:all; }
 .next-btn.on:hover { background:#3d3020; transform:translateY(-2px); }
-.skip-btn { padding:14px 24px; background:transparent; border:1px solid rgba(42,32,24,0.15); color:#9a8a70; border-radius:100px; font-family:'DM Sans',sans-serif; font-size:0.8rem; cursor:pointer; transition:all 0.2s; }
-.skip-btn:hover { border-color:#8a6a40; }
-.back-btn { padding:14px 24px; background:transparent; border:none; color:#c4b4a0; font-family:'DM Sans',sans-serif; font-size:0.8rem; cursor:pointer; transition:all 0.2s; letter-spacing:1px; }
+.back-btn { padding:14px 20px; background:transparent; border:none; color:#c4b4a0; font-family:'DM Sans',sans-serif; font-size:0.8rem; cursor:pointer; transition:all 0.2s; letter-spacing:1px; }
 .back-btn:hover { color:#8a6a40; }
+.skip-btn { padding:14px 24px; background:transparent; border:1px solid rgba(42,32,24,0.15); color:#9a8a70; border-radius:100px; font-family:'DM Sans',sans-serif; font-size:0.8rem; cursor:pointer; }
+.skip-btn:hover { border-color:#8a6a40; }
 
-/* ══ RESULT ══ */
-#result {
-  min-height:100vh; align-items:center; justify-content:center;
-  text-align:center; padding:60px 24px; background:#faf7f2; position:relative; overflow:hidden;
-}
-#result::before {
-  content:''; position:absolute; top:50%; left:50%;
-  transform:translate(-50%,-50%); width:400px; height:400px;
-  background:radial-gradient(circle, rgba(180,144,80,0.08) 0%, transparent 60%);
-  pointer-events:none;
-}
+#result { min-height:100vh; align-items:center; justify-content:center; text-align:center; padding:60px 24px; position:relative; overflow:hidden; }
+#result::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:400px; height:400px; background:radial-gradient(circle, rgba(180,144,80,0.08) 0%, transparent 60%); pointer-events:none; }
 .result-label { font-size:0.6rem; letter-spacing:5px; color:#b4906a; text-transform:uppercase; margin-bottom:20px; position:relative; z-index:1; }
-.result-title { font-size:clamp(1.8rem,5vw,3rem); font-weight:300; color:#2a2018; margin-bottom:8px; position:relative; z-index:1; }
+.result-title { font-size:clamp(1.8rem,5vw,3rem); font-weight:300; color:#2a2018; margin-bottom:12px; position:relative; z-index:1; }
 .result-sub { font-size:0.85rem; color:#b4906a; font-weight:300; font-style:italic; position:relative; z-index:1; }
 
-/* ══ RESPONSIVE ══ */
 @media (max-width:500px) {
   .pick-cards { grid-template-columns:1fr 1fr; }
   .demo-opts { gap:8px; }
@@ -191,375 +93,364 @@ input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.15); }
 
 <div class="progress-bar" id="progress" style="width:0%"></div>
 
-<!-- INTRO -->
 <div class="screen active" id="intro">
   <div class="intro-eyebrow">Marka Araştırması · 2026</div>
   <h1>Sana bir marka<br>göstermek istiyoruz.</h1>
   <p>Beş farklı isim, beş farklı his. Hangisi seni durdurur? 3 dakikan var.</p>
-  <p style="font-size:0.75rem;color:#c4b4a0;margin-top:-24px;margin-bottom:0;">🔒 Cevapların tamamen anonimdir, kişisel bilgi toplanmaz.</p>
-  <button class="start-btn" style="margin-top:24px;" onclick="startSurvey()">Başla →</button>
-
+  <p style="font-size:0.75rem;color:#c4b4a0;margin-top:-24px;margin-bottom:0;">🔒 Cevapların tamamen anonimdir.</p>
+  <button class="start-btn" id="btn-start" style="margin-top:24px;">Başla →</button>
 </div>
 
-<!-- SURVEY -->
 <div class="screen" id="survey">
-
-  <!-- S1: SEN KİMSİN -->
-  <div class="q-wrap" id="s1" style="display:flex;">
-    <div class="q-step">Adım 1 / 5</div>
+  <div class="q-wrap active" id="s1">
+    <div class="q-step">Adım 1 / 4</div>
     <div class="q-title">Önce seni tanıyalım.</div>
     <div class="q-hint">Üç hızlı soru</div>
-
     <div class="demo-group">
       <div class="demo-label">Yaş grubu</div>
-      <div class="demo-opts" id="age-opts">
-        <div class="demo-opt" onclick="selectDemo(this,'age','15-24')">15–24</div>
-        <div class="demo-opt" onclick="selectDemo(this,'age','25-34')">25–34</div>
-        <div class="demo-opt" onclick="selectDemo(this,'age','35-44')">35–44</div>
-        <div class="demo-opt" onclick="selectDemo(this,'age','45-55')">45–55</div>
-        <div class="demo-opt" onclick="selectDemo(this,'age','55+')">55+</div>
+      <div class="demo-opts">
+        <div class="demo-opt" data-group="age" data-val="15-24">15–24</div>
+        <div class="demo-opt" data-group="age" data-val="25-34">25–34</div>
+        <div class="demo-opt" data-group="age" data-val="35-44">35–44</div>
+        <div class="demo-opt" data-group="age" data-val="45-55">45–55</div>
+        <div class="demo-opt" data-group="age" data-val="55+">55+</div>
       </div>
     </div>
-
     <div class="demo-group">
       <div class="demo-label">Cinsiyet</div>
-      <div class="demo-opts" id="gender-opts">
-        <div class="demo-opt" onclick="selectDemo(this,'gender','Kadın')">Kadın</div>
-        <div class="demo-opt" onclick="selectDemo(this,'gender','Erkek')">Erkek</div>
-        <div class="demo-opt" onclick="selectDemo(this,'gender','Belirtmek istemiyorum')">Belirtmek istemiyorum</div>
+      <div class="demo-opts">
+        <div class="demo-opt" data-group="gender" data-val="Kadın">Kadın</div>
+        <div class="demo-opt" data-group="gender" data-val="Erkek">Erkek</div>
+        <div class="demo-opt" data-group="gender" data-val="Belirtmek istemiyorum">Belirtmek istemiyorum</div>
       </div>
     </div>
-
     <div class="demo-group">
       <div class="demo-label">Alışveriş alışkanlığı</div>
-      <div class="demo-opts" id="shop-opts">
-        <div class="demo-opt" onclick="selectDemo(this,'shop','Organik / sağlıklı ürünlere odaklanırım')">🌿 Organik / sağlıklı</div>
-        <div class="demo-opt" onclick="selectDemo(this,'shop','Fiyat / kalite dengesine bakarım')">⚖️ Fiyat / kalite dengesi</div>
-        <div class="demo-opt" onclick="selectDemo(this,'shop','Marka bağlılığım yüksektir')">❤️ Marka bağlılığı</div>
-        <div class="demo-opt" onclick="selectDemo(this,'shop','Yeni ürünleri denemekten hoşlanırım')">✨ Yeni ürün denerim</div>
-        <div class="demo-opt" onclick="selectDemo(this,'shop','Ambalaj ve tasarıma önem veririm')">🎨 Ambalaj / tasarım</div>
+      <div class="demo-opts">
+        <div class="demo-opt" data-group="shop" data-val="Organik/sağlıklı">🌿 Organik / sağlıklı</div>
+        <div class="demo-opt" data-group="shop" data-val="Fiyat/kalite dengesi">⚖️ Fiyat / kalite dengesi</div>
+        <div class="demo-opt" data-group="shop" data-val="Marka bağlılığı">❤️ Marka bağlılığı</div>
+        <div class="demo-opt" data-group="shop" data-val="Yeni ürün denerim">✨ Yeni ürün denerim</div>
+        <div class="demo-opt" data-group="shop" data-val="Ambalaj/tasarım">🎨 Ambalaj / tasarım</div>
       </div>
     </div>
-
     <div class="q-nav">
-      <button class="back-btn" onclick="showScreen('intro')">← Geri</button>
-      <button class="next-btn" id="next-s1" onclick="goSlider(0)">Devam →</button>
+      <button class="back-btn" id="btn-s1-back">← Geri</button>
+      <button class="next-btn" id="btn-s1-next">Devam →</button>
     </div>
   </div>
 
-  <!-- S2: SLIDER (dinamik, JS ile doldurulacak) -->
-  <div class="q-wrap" id="s2" style="display:none;">
-    <div class="q-step" id="slider-step">Adım 2 / 5</div>
-    <div class="q-title">Bu isim seni ne kadar etkiliyor?</div>
-    <div class="q-hint">1 = Hiç etkilemedi · 7 = Çok etkiledi</div>
-    <div class="slider-counter" id="slider-counter">1 / 5</div>
-
-    <div class="slider-brand-visual" id="slider-visual"></div>
-
-    <div class="slider-wrap">
-      <div class="slider-labels"><span>Hiç etkilemedi</span><span>Çok etkiledi</span></div>
-      <div class="slider-track">
-        <input type="range" id="brand-slider" min="1" max="7" value="0" oninput="onSlider(this.value)" style="--val:0">
-      </div>
-      <div class="slider-numbers">
-        <span class="sn" onclick="setSlider(1)">1</span>
-        <span class="sn" onclick="setSlider(2)">2</span>
-        <span class="sn" onclick="setSlider(3)">3</span>
-        <span class="sn" onclick="setSlider(4)">4</span>
-        <span class="sn" onclick="setSlider(5)">5</span>
-        <span class="sn" onclick="setSlider(6)">6</span>
-        <span class="sn" onclick="setSlider(7)">7</span>
-      </div>
-      <div class="slider-value-display" id="slider-val-display"></div>
-    </div>
-
+  <div class="q-wrap" id="s2">
+    <div class="q-step" id="s2-step">Adım 2 / 4</div>
+    <div class="q-title">Bu marka seni ne kadar etkiliyor?</div>
+    <div class="q-hint">Her kriteri 1–7 arası puanla</div>
+    <div class="brand-rating-page" id="rating-page"></div>
     <div class="q-nav">
-      <button class="back-btn" id="back-s2" onclick="goBack('s2')">← Geri</button>
-      <button class="next-btn" id="next-s2" onclick="nextSlider()">Devam →</button>
+      <button class="back-btn" id="btn-s2-back">← Geri</button>
+      <button class="next-btn" id="btn-s2-next">Devam →</button>
     </div>
   </div>
 
-  <!-- S3: HANGİSİNİ SEÇERDİN -->
-  <div class="q-wrap" id="s3" style="display:none;">
-    <div class="q-step">Adım 3 / 5</div>
+  <div class="q-wrap" id="s3">
+    <div class="q-step">Adım 3 / 4</div>
     <div class="q-title">Bir isim seçecek olsan,<br>hangisini seçerdin?</div>
     <div class="q-hint">Raf önünde duruyorsun — ilk içgüdün ne?</div>
     <div class="pick-cards" id="pick-cards"></div>
     <div class="q-nav">
-      <button class="back-btn" onclick="goBack('s3')">← Geri</button>
-      <button class="next-btn" id="next-s3" onclick="goFromPick()">Devam →</button>
+      <button class="back-btn" id="btn-s3-back">← Geri</button>
+      <button class="next-btn" id="btn-s3-next">Devam →</button>
     </div>
   </div>
 
-  <!-- S4a: İSİM ÖNERİ (hiçbirini seçtiyse) -->
-  <div class="q-wrap" id="s4a" style="display:none;">
-    <div class="q-step">Adım 4 / 5</div>
-    <div class="q-title">Peki sen olsan<br>ne koyardın?</div>
+  <div class="q-wrap" id="s4a">
+    <div class="q-step">Adım 4 / 4</div>
+    <div class="q-title">Peki sen olsan ne koyardın?</div>
     <div class="q-hint">Aklına gelen her şeyi yazabilirsin</div>
     <textarea class="open-input" id="name-suggestion" placeholder="İsim fikrin, beklentin, ne hissettirdi..."></textarea>
     <div class="q-nav">
-      <button class="back-btn" onclick="goBack('s4a')">← Geri</button>
-      <button class="next-btn on" onclick="submitSurvey()">Gönder →</button>
-      <button class="skip-btn" onclick="submitSurvey()">Geç</button>
+      <button class="back-btn" id="btn-s4a-back">← Geri</button>
+      <button class="next-btn on" id="btn-s4a-send">Gönder →</button>
+      <button class="skip-btn" id="btn-s4a-skip">Geç</button>
     </div>
   </div>
 
-  <!-- S4b: ÇAĞRIŞIM (isim seçtiyse) -->
-  <div class="q-wrap" id="s4b" style="display:none;">
-    <div class="q-step">Adım 4 / 5</div>
-    <div class="q-title" id="s4b-title">Bu isim sende<br>ne çağrıştırıyor?</div>
+  <div class="q-wrap" id="s4b">
+    <div class="q-step">Adım 4 / 4</div>
+    <div class="q-title" id="s4b-title">Bu isim sende ne çağrıştırıyor?</div>
     <div class="q-hint">Bir kelime bile yeter</div>
     <textarea class="open-input" id="association" placeholder="Aklına ilk gelen şeyi yaz..."></textarea>
     <div class="q-nav">
-      <button class="back-btn" onclick="goBack('s4b')">← Geri</button>
-      <button class="next-btn on" onclick="submitSurvey()">Gönder →</button>
-      <button class="skip-btn" onclick="submitSurvey()">Geç</button>
+      <button class="back-btn" id="btn-s4b-back">← Geri</button>
+      <button class="next-btn on" id="btn-s4b-send">Gönder →</button>
+      <button class="skip-btn" id="btn-s4b-skip">Geç</button>
     </div>
   </div>
-
 </div>
 
-<!-- RESULT -->
 <div class="screen" id="result">
   <div class="result-label">Teşekkürler</div>
   <div class="result-title">Cevapların kaydedildi.</div>
-  <div class="result-sub" style="margin-top:12px;">Katkın için teşekkürler — bu araştırma gerçek bir marka doğuracak.</div>
+  <div class="result-sub">Katkın için teşekkürler — bu araştırma gerçek bir marka doğuracak.</div>
 </div>
 
 <script>
-// ═══════════════════════════════════════
-// DATA
-// ═══════════════════════════════════════
-const brands = [
-  { id:'NÖTR',  tagline:'Smart Snacking',    cls:'vis-notr' },
-  { id:'ZENO',  tagline:'Smart Snacking',     cls:'vis-zeno' },
-  { id:'KIVO',  tagline:'Smart Snacking',  cls:'vis-kivo' },
-  { id:'MOYA',  tagline:'Smart Snacking', cls:'vis-moya' },
-  { id:'NUKA',  tagline:'Smart Snacking',     cls:'vis-nuka' }
-];
+document.addEventListener('DOMContentLoaded', function() {
 
-let answers = { age:'', gender:'', shop:'', ratings:{}, pick:'', association:'', nameSuggestion:'' };
-let demoFilled = { age:false, gender:false, shop:false };
-let shuffledBrands = [];
-let sliderIdx = 0;
-let sliderTouched = false;
+  var brands = [
+    { id:'NÖTR' }, { id:'ZENO' }, { id:'KIVO' }, { id:'MOYA' }, { id:'NUKA' }
+  ];
 
-// ═══════════════════════════════════════
-// UTILS
-// ═══════════════════════════════════════
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length-1; i>0; i--) {
-    const j = Math.floor(Math.random()*(i+1));
-    [a[i],a[j]] = [a[j],a[i]];
+  var criteria = [
+    { id:'anlıyor', emoji:'🎯', label:'Bu isim beni anlıyor' },
+    { id:'alırım',  emoji:'🛒', label:'Rafta görürsem satın alırım' },
+    { id:'premium', emoji:'✨', label:'Şık ve premium hissettiriyor' },
+    { id:'merak',   emoji:'🔍', label:'Merak uyandırıyor, daha fazlasını görmek istiyorum' },
+    { id:'güven',   emoji:'🤝', label:'Güvenilir bir marka gibi duruyor' }
+  ];
+
+  var answers = { age:'', gender:'', shop:'', ratings:{}, pick:'', association:'', nameSuggestion:'' };
+  var demoFilled = { age:false, gender:false, shop:false };
+  var shuffledBrands = [];
+  var ratingIdx = 0;
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length-1; i > 0; i--) {
+      var j = Math.floor(Math.random()*(i+1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
   }
-  return a;
-}
 
-function setProgress(pct) {
-  document.getElementById('progress').style.width = pct + '%';
-}
-
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0,0);
-}
-
-function showStep(id) {
-  document.querySelectorAll('.q-wrap').forEach(s => s.style.display = 'none');
-  document.getElementById(id).style.display = 'flex';
-  window.scrollTo(0,0);
-}
-
-// ═══════════════════════════════════════
-// START
-// ═══════════════════════════════════════
-function startSurvey() {
-  shuffledBrands = shuffle(brands);
-  showScreen('survey');
-  showStep('s1');
-  setProgress(5);
-}
-
-// ═══════════════════════════════════════
-// S1: DEMO
-// ═══════════════════════════════════════
-function selectDemo(el, group, val) {
-  document.querySelectorAll(`#${group}-opts .demo-opt`).forEach(o => o.classList.remove('sel'));
-  el.classList.add('sel');
-  answers[group] = val;
-  demoFilled[group] = true;
-  checkS1();
-}
-
-function checkS1() {
-  const ok = demoFilled.age && demoFilled.gender && demoFilled.shop;
-  const btn = document.getElementById('next-s1');
-  btn.classList.toggle('on', ok);
-}
-
-// ═══════════════════════════════════════
-// S2: SLIDER
-// ═══════════════════════════════════════
-function goSlider(idx) {
-  sliderIdx = idx;
-  sliderTouched = false;
-  const brand = shuffledBrands[idx];
-  const total = shuffledBrands.length;
-
-  document.getElementById('slider-step').textContent = 'Adım 2 / 5';
-  document.getElementById('slider-counter').textContent = `${idx+1} / ${total}`;
-
-  // Render visual
-  const vis = document.getElementById('slider-visual');
-  vis.className = 'slider-brand-visual ' + brand.cls;
-  vis.innerHTML = `<div class="vname">${brand.id}</div><div class="vsub">${brand.tagline}</div>`;
-
-  // Reset slider — no default, user must choose
-  const sl = document.getElementById('brand-slider');
-  sl.value = 0;
-  sl.classList.add('untouched');
-  document.getElementById('next-s2').classList.remove('on');
-  document.querySelectorAll('.sn').forEach(el => el.classList.remove('active'));
-  document.getElementById('slider-val-display').textContent = '';
-
-  showScreen('survey');
-  showStep('s2');
-  setProgress(10 + idx * 12);
-}
-
-function onSlider(v) {
-  sliderTouched = true;
-  document.getElementById('brand-slider').classList.remove('untouched');
-  updateSliderUI(parseInt(v));
-  document.getElementById('next-s2').classList.add('on');
-}
-
-function setSlider(v) {
-  const sl = document.getElementById('brand-slider');
-  sl.value = v;
-  sl.classList.remove('untouched');
-  sliderTouched = true;
-  updateSliderUI(v);
-  document.getElementById('next-s2').classList.add('on');
-}
-
-function updateSliderUI(v) {
-  v = parseInt(v);
-  if (!v) return;
-  document.querySelectorAll('.sn').forEach((el,i) => {
-    el.classList.toggle('active', i+1 == v);
-  });
-  const labels = ['','Hiç etkilemedi','','','Nötr','','','Çok etkiledi'];
-  document.getElementById('slider-val-display').textContent = labels[v] || '';
-}
-
-function nextSlider() {
-  const v = parseInt(document.getElementById('brand-slider').value);
-  if (!v) return;
-  answers.ratings[shuffledBrands[sliderIdx].id] = v;
-
-  if (sliderIdx < shuffledBrands.length - 1) {
-    goSlider(sliderIdx + 1);
-  } else {
-    renderPickCards();
-    showStep('s3');
-    setProgress(72);
+  function setProgress(pct) {
+    document.getElementById('progress').style.width = pct + '%';
   }
-}
 
-// ═══════════════════════════════════════
-// S3: SEÇİM
-// ═══════════════════════════════════════
-function renderPickCards() {
-  const container = document.getElementById('pick-cards');
-  const shuffled = shuffle(brands);
-  container.innerHTML = '';
-  shuffled.forEach(b => {
-    const div = document.createElement('div');
-    div.className = 'pick-card';
-    div.onclick = function() { selectPick(this, b.id); };
-    div.innerHTML = `<div class="pc-visual ${b.cls}"><div class="vname">${b.id}</div><div class="vsub">Smart Snacking</div></div>`;
-    container.appendChild(div);
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function showStep(id) {
+    document.querySelectorAll('.q-wrap').forEach(function(s) { s.classList.remove('active'); });
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  // INTRO
+  document.getElementById('btn-start').addEventListener('click', function() {
+    showScreen('survey');
+    setProgress(5);
   });
-  // None card always last
-  const none = document.createElement('div');
-  none.className = 'pick-card pc-none';
-  none.onclick = function() { selectPick(this, 'none'); };
-  none.innerHTML = `<div class="pc-visual" style="background:#f8f8f8;"><div class="pc-none-text">Hiçbirini<br>Beğenmedim</div></div>`;
-  container.appendChild(none);
-}
 
-function selectPick(el, val) {
-  document.querySelectorAll('.pick-card').forEach(c => c.classList.remove('sel'));
-  el.classList.add('sel');
-  answers.pick = val;
-  document.getElementById('next-s3').classList.add('on');
-}
+  // S1
+  document.querySelectorAll('.demo-opt').forEach(function(el) {
+    el.addEventListener('click', function() {
+      var group = el.getAttribute('data-group');
+      var val = el.getAttribute('data-val');
+      document.querySelectorAll('.demo-opt[data-group="' + group + '"]').forEach(function(o) { o.classList.remove('sel'); });
+      el.classList.add('sel');
+      answers[group] = val;
+      demoFilled[group] = true;
+      var ok = demoFilled.age && demoFilled.gender && demoFilled.shop;
+      document.getElementById('btn-s1-next').classList.toggle('on', ok);
+    });
+  });
 
-function goBack(from) {
-  if (from === 's2') {
-    if (sliderIdx > 0) {
-      sliderIdx--;
-      goSlider(sliderIdx);
+  document.getElementById('btn-s1-back').addEventListener('click', function() {
+    showScreen('intro');
+    setProgress(0);
+  });
+
+  document.getElementById('btn-s1-next').addEventListener('click', function() {
+    if (!demoFilled.age || !demoFilled.gender || !demoFilled.shop) return;
+    shuffledBrands = shuffle(brands);
+    renderRating(0);
+    showScreen('survey');
+  });
+
+  // S2: RATING
+  function renderRating(idx) {
+    ratingIdx = idx;
+    var brand = shuffledBrands[idx];
+    var total = shuffledBrands.length;
+    document.getElementById('s2-step').textContent = 'Adım 2 / 4 — Marka ' + (idx+1) + ' / ' + total;
+
+    var html = '<div class="brand-counter">' + (idx+1) + ' / ' + total + '</div>';
+    html += '<div class="brand-logo-box"><div class="vname">' + brand.id + '</div><div class="vsub">Smart Snacking</div></div>';
+    html += '<div class="criteria-list">';
+    criteria.forEach(function(c) {
+      html += '<div class="criterion">';
+      html += '<div class="crit-label"><span class="crit-emoji">' + c.emoji + '</span>' + c.label + '</div>';
+      html += '<input class="crit-range untouched" type="range" min="1" max="7" value="1" id="range-' + c.id + '" data-crit="' + c.id + '">';
+      html += '<div class="crit-nums">';
+      for (var n = 1; n <= 7; n++) {
+        html += '<span class="crit-num" data-crit="' + c.id + '" data-val="' + n + '">' + n + '</span>';
+      }
+      html += '</div></div>';
+    });
+    html += '</div>';
+    document.getElementById('rating-page').innerHTML = html;
+
+    criteria.forEach(function(c) {
+      var inp = document.getElementById('range-' + c.id);
+      inp.addEventListener('input', function() {
+        inp.classList.remove('untouched');
+        var v = parseInt(inp.value);
+        updateCritUI(c.id, v);
+        saveCrit(brand.id, c.id, v);
+        checkDone();
+      });
+      document.querySelectorAll('.crit-num[data-crit="' + c.id + '"]').forEach(function(numEl) {
+        numEl.addEventListener('click', function() {
+          var v = parseInt(numEl.getAttribute('data-val'));
+          inp.value = v;
+          inp.classList.remove('untouched');
+          updateCritUI(c.id, v);
+          saveCrit(brand.id, c.id, v);
+          checkDone();
+        });
+      });
+    });
+
+    if (answers.ratings[brand.id]) {
+      criteria.forEach(function(c) {
+        var v = answers.ratings[brand.id][c.id];
+        if (v) {
+          var inp = document.getElementById('range-' + c.id);
+          if (inp) { inp.value = v; inp.classList.remove('untouched'); updateCritUI(c.id, v); }
+        }
+      });
+    }
+
+    checkDone();
+    showStep('s2');
+    setProgress(10 + idx * 14);
+  }
+
+  function updateCritUI(critId, v) {
+    document.querySelectorAll('.crit-num[data-crit="' + critId + '"]').forEach(function(el) {
+      el.classList.toggle('active', parseInt(el.getAttribute('data-val')) === v);
+    });
+  }
+
+  function saveCrit(brandId, critId, val) {
+    if (!answers.ratings[brandId]) answers.ratings[brandId] = {};
+    answers.ratings[brandId][critId] = val;
+  }
+
+  function checkDone() {
+    var brand = shuffledBrands[ratingIdx];
+    var saved = answers.ratings[brand.id] || {};
+    var allDone = criteria.every(function(c) { return saved[c.id]; });
+    document.getElementById('btn-s2-next').classList.toggle('on', allDone);
+  }
+
+  document.getElementById('btn-s2-back').addEventListener('click', function() {
+    if (ratingIdx > 0) {
+      renderRating(ratingIdx - 1);
     } else {
       showStep('s1');
       setProgress(5);
     }
-  } else if (from === 's3') {
-    goSlider(shuffledBrands.length - 1);
-  } else if (from === 's4a' || from === 's4b') {
-    showStep('s3');
-    setProgress(72);
+  });
+
+  document.getElementById('btn-s2-next').addEventListener('click', function() {
+    if (ratingIdx < shuffledBrands.length - 1) {
+      renderRating(ratingIdx + 1);
+    } else {
+      renderPickCards();
+      showStep('s3');
+      setProgress(82);
+    }
+  });
+
+  // S3: PICK
+  function renderPickCards() {
+    var container = document.getElementById('pick-cards');
+    container.innerHTML = '';
+    var shuffled = shuffle(brands);
+    shuffled.forEach(function(b) {
+      var div = document.createElement('div');
+      div.className = 'pick-card';
+      div.innerHTML = '<div class="pc-visual"><div class="vname">' + b.id + '</div><div class="vsub">Smart Snacking</div></div>';
+      div.addEventListener('click', function() {
+        document.querySelectorAll('.pick-card').forEach(function(c) { c.classList.remove('sel'); });
+        div.classList.add('sel');
+        answers.pick = b.id;
+        document.getElementById('btn-s3-next').classList.add('on');
+      });
+      container.appendChild(div);
+    });
+    var none = document.createElement('div');
+    none.className = 'pick-card';
+    none.innerHTML = '<div class="pc-none-visual"><div class="pc-none-text">Hiçbirini<br>Beğenmedim</div></div>';
+    none.addEventListener('click', function() {
+      document.querySelectorAll('.pick-card').forEach(function(c) { c.classList.remove('sel'); });
+      none.classList.add('sel');
+      answers.pick = 'none';
+      document.getElementById('btn-s3-next').classList.add('on');
+    });
+    container.appendChild(none);
   }
-}
 
-function goFromPick() {
-  if (!answers.pick) return;
-  setProgress(85);
-  if (answers.pick === 'none') {
-    showStep('s4a');
-  } else {
-    document.getElementById('s4b-title').innerHTML = `<strong style="color:#b4906a">${answers.pick}</strong> sende<br>ne çağrıştırıyor?`;
-    showStep('s4b');
-  }
-}
+  document.getElementById('btn-s3-back').addEventListener('click', function() {
+    renderRating(shuffledBrands.length - 1);
+  });
 
-// ═══════════════════════════════════════
-// SUBMIT
-// ═══════════════════════════════════════
-async function submitSurvey() {
-  answers.association = document.getElementById('association')?.value || '';
-  answers.nameSuggestion = document.getElementById('name-suggestion')?.value || '';
+  document.getElementById('btn-s3-next').addEventListener('click', function() {
+    if (!answers.pick) return;
+    setProgress(92);
+    if (answers.pick === 'none') {
+      showStep('s4a');
+    } else {
+      document.getElementById('s4b-title').innerHTML = '<strong style="color:#b4906a">' + answers.pick + '</strong> sende ne çağrıştırıyor?';
+      showStep('s4b');
+    }
+  });
 
-  setProgress(100);
-  showScreen('result');
+  // S4a
+  document.getElementById('btn-s4a-back').addEventListener('click', function() { showStep('s3'); setProgress(82); });
+  document.getElementById('btn-s4a-send').addEventListener('click', submitSurvey);
+  document.getElementById('btn-s4a-skip').addEventListener('click', submitSurvey);
 
-  // Formspree
-  const ratingsStr = Object.entries(answers.ratings).map(([k,v]) => `${k}:${v}`).join(', ');
-  const payload = {
-    yas: answers.age,
-    cinsiyet: answers.gender,
-    alisveris: answers.shop,
-    puanlar: ratingsStr,
-    secilen_isim: answers.pick,
-    cagrisim: answers.association,
-    isim_oneri: answers.nameSuggestion,
-    marka_sirasi: shuffledBrands.map(b=>b.id).join(' → ')
-  };
+  // S4b
+  document.getElementById('btn-s4b-back').addEventListener('click', function() { showStep('s3'); setProgress(82); });
+  document.getElementById('btn-s4b-send').addEventListener('click', submitSurvey);
+  document.getElementById('btn-s4b-skip').addEventListener('click', submitSurvey);
 
-  try {
-    await fetch('https://formspree.io/f/mbdawbqv', {
+  // SUBMIT
+  function submitSurvey() {
+    answers.association = document.getElementById('association').value || '';
+    answers.nameSuggestion = document.getElementById('name-suggestion').value || '';
+    setProgress(100);
+    showScreen('result');
+
+    var payload = {
+      yas: answers.age,
+      cinsiyet: answers.gender,
+      alisveris: answers.shop,
+      secilen_isim: answers.pick,
+      cagrisim: answers.association,
+      isim_oneri: answers.nameSuggestion,
+      marka_sirasi: shuffledBrands.map(function(b) { return b.id; }).join(' → ')
+    };
+
+    Object.keys(answers.ratings).forEach(function(brand) {
+      Object.keys(answers.ratings[brand]).forEach(function(crit) {
+        payload[brand + '_' + crit] = answers.ratings[brand][crit];
+      });
+    });
+
+    fetch('https://formspree.io/f/mbdawbqv', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(payload)
-    });
-  } catch(e) { console.log('Formspree error', e); }
-}
+    }).catch(function(e) { console.log('Formspree error', e); });
+  }
 
-// Init slider UI
-updateSliderUI(4);
+}); // DOMContentLoaded
 </script>
 </body>
 </html>
