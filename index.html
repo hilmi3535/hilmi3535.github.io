@@ -99,7 +99,7 @@ body { background:#faf7f2; color:#2a2018; font-family:'DM Sans',sans-serif; min-
 <div style="font-size:0.75rem;color:#b4906a;text-align:center;">🔒 Cevapların tamamen anonimdir</div>
   </div>
   <button class="start-btn" id="btn-start">Başla →</button>
-  <div style="font-size:0.72rem;color:#c4b4a0;margin-top:12px;position:relative;z-index:1;">⏱ Yaklaşık 3 dakika sürer</div>
+  <div style="font-size:0.72rem;color:#c4b4a0;margin-top:12px;position:relative;z-index:1;">⏱ Yaklaşık 1 dakika sürer</div>
 </div>
 
 <!-- SURVEY -->
@@ -385,7 +385,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     checkDone(); showStep('s2'); setProgress(30+idx*10);
   }
-  function updateCritUI(cid,v){} // artık kullanılmıyor
   function saveCrit(bid,cid,val){if(!answers.ratings[bid])answers.ratings[bid]={};answers.ratings[bid][cid]=val;}
   function checkDone(){var s=answers.ratings[shuffledBrands[ratingIdx].id]||{};document.getElementById('btn-s2-next').classList.toggle('on',criteria.every(function(c){return s[c.id];}));}
   document.getElementById('btn-s2-back').addEventListener('click', function(){ showBrandIntro(ratingIdx); });
