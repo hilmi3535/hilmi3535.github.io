@@ -446,6 +446,10 @@ function saveCrit(bid,cid,val){if(!answers.ratings[bid])answers.ratings[bid]={};
     });
   });
 
+  sendToSheets(payload);
+  showScreen('email-screen');
+  }
+
   // Email capture — Formspree
   document.getElementById('cap-submit-btn').addEventListener('click', function(){
     var name=document.getElementById('cap-name').value.trim();
