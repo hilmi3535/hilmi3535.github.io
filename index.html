@@ -423,14 +423,38 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('btn-s4b-skip').addEventListener('click',submitSurvey);
 
   function submitSurvey(){
-    answers.association=document.getElementById('association').value||'';
-    answers.nameSuggestion=document.getElementById('name-suggestion').value||'';
-    setProgress(100);
-    if(window.fbq) fbq('track','Lead');
-    var payload={yas:answers.age,cinsiyet:answers.gender,alisveris:answers.shop,atiştırmalık_sıklık:answers.freq,secilen_isim:answers.pick,cagrisim:answers.association,isim_oneri:answers.nameSuggestion,marka_sirasi:shuffledBrands.map(function(b){return b.id;}).join(' → ')};
-    Object.keys(answers.ratings).forEach(function(brand){Object.keys(answers.ratings[brand]).forEach(function(crit){payload[brand+'_'+crit]=answers.ratings[brand][crit];});});
-    sendToSheets(payload);
-    showScreen('email-screen');
+  answers.association=document.getElementById('association').value||'';
+  answers.nameSuggestion=document.getElementById('name-suggestion').value||'';
+  setProgress(100);
+
+  if(window.fbq){
+    fbq('track','Lead',{
+      age: answers.age,
+      gender: answers.gender,
+      shopping_type: answers.shop,
+      snack_freq: answers.freq
+    });
+  }
+
+  var payload={
+    yas:answers.age,
+    cinsiyet:answers.gender,
+    alisveris:answers.shop,
+    atiştırmalık_sıklık:answers.freq,
+    secilen_isim:answers.pick,
+    cagrisim:answers.association,
+    isim_oneri:answers.nameSuggestion,
+    marka_sirasi:shuffledBrands.map(function(b){return b.id;}).join(' → ')
+  };
+
+  Object.keys(answers.ratings).forEach(function(brand){
+    Object.keys(answers.ratings[brand]).forEach(function(crit){
+      payload[brand+'_'+crit]=answers.ratings[brand][crit];
+    });
+  });
+
+  sendToSheets(payload);
+  showScreen('email-screen');
   }
 
   // Email capture — Formspree
